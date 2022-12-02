@@ -10,6 +10,8 @@
 
 # Build output
 api
+coverage.out
+coverage.html
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
