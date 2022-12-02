@@ -34,7 +34,7 @@ jobs:
               mkdir artifacts
               cp api artifacts/.
       - name: Archive
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: api
           path: artifacts
