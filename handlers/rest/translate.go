@@ -2,6 +2,7 @@ package rest
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strings"
 
@@ -26,6 +27,7 @@ func TranslateHandler(w http.ResponseWriter, r *http.Request) {
 
 	if translation == "" {
 		language = ""
+		log.Print("got no language")
 		w.WriteHeader(404)
 		return
 	}
