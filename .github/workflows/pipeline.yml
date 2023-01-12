@@ -96,6 +96,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          service_account: 'hello-api@snappy-benefit-374514.iam.gserviceaccount.com '
       - name: Deploy function
         id: deploy
         uses: google-github-actions/deploy-cloud-functions@main
@@ -103,6 +108,5 @@ jobs:
           name: translate
           entry_point: Translate
           runtime: go119
-          credentials: ${{ secrets.GCP_CREDENTIALS }}
       - id: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
