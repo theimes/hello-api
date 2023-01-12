@@ -2,6 +2,8 @@ name: CI Checks
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*"
 jobs:
