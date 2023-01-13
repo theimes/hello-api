@@ -1,6 +1,9 @@
 name: CI Checks
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -9,6 +12,7 @@ on:
 jobs:
   test:
     name: Test Application
+    needs: format-check
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
@@ -32,6 +36,18 @@ jobs:
         with:
           name: reports
           path: reports
+  format-check:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.19
+      - name: Check out Go code into the Go module directory
+        uses: actions/checkout@v3
+      - name: Run format Check
+        run: make check-format
   build:
     name: Build App
     runs-on: ubuntu-latest
