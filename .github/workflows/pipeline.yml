@@ -110,3 +110,23 @@ jobs:
           runtime: go119
       - id: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
+  deploy-pass:
+    name: Deploy PaaS
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          service_account: 'hello-api@snappy-benefit-374514.iam.gserviceaccount.com'
+      - name: Deploy App
+        id: deploy
+        uses: google-github-actions/deploy-appengine@main
+      - id: test
+        run: curl "${{ steps.deploy.outputs.url }}/translate/hello"
