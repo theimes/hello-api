@@ -13,7 +13,7 @@ import (
 func main() {
 	addr := fmt.Sprintf(":%s", os.Getenv("PORT"))
 	if addr == ":" {
-		addr = "4000"
+		addr = ":4000"
 	}
 	mux := http.NewServeMux()
 

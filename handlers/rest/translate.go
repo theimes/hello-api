@@ -22,7 +22,13 @@ func TranslateHandler(w http.ResponseWriter, r *http.Request) {
 	if language == "" {
 		language = "english"
 	}
-	word := strings.ReplaceAll(r.URL.Path, "/", "")
+
+	words := strings.Split(r.URL.Path, "/")
+	for n, w := range words {
+		log.Printf("%d: %s", n, w)
+	}
+
+	word := words[len(words)-1]
 	translation := translation.Translate(word, language)
 
 	if translation == "" {
