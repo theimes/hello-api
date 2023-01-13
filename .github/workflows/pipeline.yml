@@ -103,7 +103,7 @@ jobs:
           service_account: 'hello-api@snappy-benefit-374514.iam.gserviceaccount.com'
       - name: Deploy function
         id: deploy
-        uses: google-github-actions/deploy-cloud-functions@main
+        uses: google-github-actions/deploy-cloud-functions@v1.0.0
         with:
           name: translate
           entry_point: Translate

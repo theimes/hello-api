@@ -1,5 +1,5 @@
 runtime: go119
-main: ./cmd
+main: ./cmd/web
 liveness_check:
   path: "/health"
   check_interval_sec: 30
