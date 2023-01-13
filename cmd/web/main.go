@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/theimes/hello-api/handlers"
 	"github.com/theimes/hello-api/handlers/rest"
@@ -22,6 +23,14 @@ func main() {
 
 	log.Printf("listening on %s", addr)
 
-	log.Fatal(http.ListenAndServe(addr, mux))
+	server := &http.Server{
+		Addr:              addr,
+		ReadHeaderTimeout: 3 * time.Second,
+	}
+
+	err := server.ListenAndServe()
+	if err != nil {
+		panic(err)
+	}
 
 }
