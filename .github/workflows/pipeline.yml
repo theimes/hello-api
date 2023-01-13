@@ -12,7 +12,9 @@ on:
 jobs:
   test:
     name: Test Application
-    needs: vet-check
+    needs: 
+      - vet-check
+      - lint
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
