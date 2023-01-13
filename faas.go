@@ -1,7 +1,7 @@
 package faas
 
 import (
-		"net/http"
+	"net/http"
 
 	"github.com/theimes/hello-api/handlers/rest"
 )
