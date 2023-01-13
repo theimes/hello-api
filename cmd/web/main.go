@@ -26,6 +26,7 @@ func main() {
 	server := &http.Server{
 		Addr:              addr,
 		ReadHeaderTimeout: 3 * time.Second,
+		Handler:           mux,
 	}
 
 	err := server.ListenAndServe()
