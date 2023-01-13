@@ -1,3 +1,4 @@
+// Package rest contains the web handler for the services
 package rest
 
 import (

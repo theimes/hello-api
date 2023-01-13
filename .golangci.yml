@@ -1,6 +1,17 @@
 linters:
   enable:
     - gosec
+    - godot
+    - misspell
+    - stylecheck
+
+linters-settings:
+  stylecheck:
+    go: "1.19"
+    checks: ["all", "ST1*"]
+
+issues:
+  exclude-use-default: false
 
 output:
   print-issued-lines: false

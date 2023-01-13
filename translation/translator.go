@@ -1,3 +1,4 @@
+// Package translation contains the core service
 package translation
 
 import "strings"
