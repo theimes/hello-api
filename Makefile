@@ -1,8 +1,9 @@
-GO_VERSION := 1.19.4
+GO_VERSION := 1.19.5
 
 setup:
 	install-go
 	init-go
+	install-lint
 
 install-go:
 	wget "https://golang.org/dl/go$(GO_VERSION).linux-amd64.tar.gz"
@@ -19,6 +20,13 @@ upgrade-go:
 	sudo tar -C /usr/local -xzf go$(GO_VERSION).linux-amd64.tar.gz
 	rm go$(GO_VERSION).linux-amd64.tar.gz
 
+install-lint:
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.50.1
+
+copy-hooks:
+	chmod +x scripts/hooks/*
+	cp -r scripts/hooks .git/.
+
 build:
 	go build -o api cmd/web/main.go
 
@@ -31,3 +39,9 @@ coverage:
 
 report:
 	go tool cover -html=coverage.out -o coverage.html
+
+check-format:
+	test -z $$(go fmt ./...)
+
+static-check:
+	golangci-lint run

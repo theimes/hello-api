@@ -1,3 +1,4 @@
+// Package rest contains the web handler for the services
 package rest
 
 import (
@@ -24,16 +25,13 @@ func TranslateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	words := strings.Split(r.URL.Path, "/")
-	for n, w := range words {
-		log.Printf("%d: %s", n, w)
-	}
 
 	word := words[len(words)-1]
 	translation := translation.Translate(word, language)
 
 	if translation == "" {
-		language = ""
-		log.Print("got no language")
+		//language = ""
+		log.Print("got no translation")
 		w.WriteHeader(404)
 		return
 	}

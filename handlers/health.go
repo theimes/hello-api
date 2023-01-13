@@ -1,3 +1,4 @@
+// Package handlers contains general web handlers
 package handlers
 
 import (
