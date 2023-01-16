@@ -7,10 +7,18 @@ import (
 	"testing"
 
 	"github.com/theimes/hello-api/handlers/rest"
-	"github.com/theimes/hello-api/translation"
 )
 
-func TestTranslate(t *testing.T) {
+type stubbedService struct{}
+
+func (s *stubbedService) Translate(word string, language string) string {
+	if word == "foo" {
+		return "bar"
+	}
+	return ""
+}
+
+func TestTranslateAPI(t *testing.T) {
 
 	// given a set of test cases
 	tt := []struct {
@@ -20,27 +28,27 @@ func TestTranslate(t *testing.T) {
 		ExpectedTranslation string
 	}{
 		{
-			Endpoint:            "/hello",
+			Endpoint:            "/translate/foo",
 			StatusCode:          200,
 			ExpectedLanguage:    "english",
-			ExpectedTranslation: "hello",
+			ExpectedTranslation: "bar",
 		},
 		{
-			Endpoint:            "/hello?language=german",
+			Endpoint:            "/translate/foo?language=german",
 			StatusCode:          200,
 			ExpectedLanguage:    "german",
-			ExpectedTranslation: "hallo",
+			ExpectedTranslation: "bar",
 		},
 		{
-			Endpoint:            "/hello?language=dutch",
+			Endpoint:            "/baz",
 			StatusCode:          404,
 			ExpectedLanguage:    "",
 			ExpectedTranslation: "",
 		},
 	}
 	// and a web handler
-	translator := translation.NewStaticService()
-	translateHandler := rest.New(translator)
+	translator := stubbedService{}
+	translateHandler := rest.New(&translator)
 	handler := http.HandlerFunc(translateHandler.TranslateHandler)
 
 	for _, tt := range tt {
@@ -57,10 +65,10 @@ func TestTranslate(t *testing.T) {
 		}
 
 		var resp rest.Resp
-		err := json.Unmarshal(rr.Body.Bytes(), &resp)
-		if err != nil {
-			t.Logf("couldn't unmarshal response %s: %s", rr.Body.String(), err.Error())
-		}
+		_ = json.Unmarshal(rr.Body.Bytes(), &resp)
+		//if err != nil {
+		//	t.Logf("couldn't unmarshal response %s: %s", rr.Body.String(), err.Error())
+		//}
 
 		if resp.Language != tt.ExpectedLanguage {
 			t.Errorf(`expected language %q but got %q`, tt.ExpectedLanguage, resp.Language)
