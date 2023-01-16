@@ -9,6 +9,7 @@ import (
 
 	"github.com/theimes/hello-api/handlers"
 	"github.com/theimes/hello-api/handlers/rest"
+	"github.com/theimes/hello-api/translation"
 )
 
 func main() {
@@ -18,7 +19,10 @@ func main() {
 	}
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/translate/hello", rest.TranslateHandler)
+	translateService := translation.NewStaticService()
+	translateHandler := rest.New(translateService)
+
+	mux.HandleFunc("/translate/hello", translateHandler.TranslateHandler)
 	mux.HandleFunc("/health", handlers.HealthCheck)
 
 	log.Printf("listening on %s", addr)

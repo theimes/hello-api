@@ -7,10 +7,12 @@ import (
 	"testing"
 
 	"github.com/theimes/hello-api/handlers/rest"
+	"github.com/theimes/hello-api/translation"
 )
 
 func TestTranslate(t *testing.T) {
 
+	// given a set of test cases
 	tt := []struct {
 		Endpoint            string
 		StatusCode          int
@@ -36,8 +38,10 @@ func TestTranslate(t *testing.T) {
 			ExpectedTranslation: "",
 		},
 	}
-
-	handler := http.HandlerFunc(rest.TranslateHandler)
+	// and a web handler
+	translator := translation.NewStaticService()
+	translateHandler := rest.New(translator)
+	handler := http.HandlerFunc(translateHandler.TranslateHandler)
 
 	for _, tt := range tt {
 		// Arrange

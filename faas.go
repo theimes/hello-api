@@ -5,8 +5,11 @@ import (
 	"net/http"
 
 	"github.com/theimes/hello-api/handlers/rest"
+	"github.com/theimes/hello-api/translation"
 )
 
 func Translate(w http.ResponseWriter, r *http.Request) {
-	rest.TranslateHandler(w, r)
+	translateService := translation.NewStaticService()
+	translateHandler := rest.New(translateService)
+	translateHandler.TranslateHandler(w, r)
 }
