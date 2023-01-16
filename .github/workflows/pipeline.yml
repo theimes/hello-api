@@ -48,6 +48,10 @@ jobs:
         run: go mod tidy
       - name: Lint
         uses: golangci/golangci-lint-action@v3
+        with:
+            version: latest
+            skip-cache: true
+            args: --modules-download-mode=readonly
   format-check:
     name: Check formatting
     runs-on: ubuntu-latest
